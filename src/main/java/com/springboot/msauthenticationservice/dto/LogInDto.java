@@ -17,11 +17,11 @@ public class LogInDto {
      */
     @Email(message = "should be of type email")
     @NotNull
-    private String email;
+    public String email;
 
     /**
      * The password
      */
     @NotNull
-    private String password;
+    public String password;
 }
