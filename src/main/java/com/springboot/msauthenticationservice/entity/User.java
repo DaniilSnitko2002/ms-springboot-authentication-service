@@ -2,7 +2,7 @@ package com.springboot.msauthenticationservice.entity;
 
 import jakarta.validation.constraints.NotBlank;
 import lombok.*;
-import org.hibernate.annotations.GenericGenerator;
+
 import javax.persistence.*;
 import java.io.Serializable;
 
@@ -18,8 +18,8 @@ public class User implements Serializable {
      * The id
      */
     @Id
-    @GeneratedValue(generator = "USERS_ID_SEQ")
-    @GenericGenerator(name = "USERS_ID_SEQ", strategy = "org.hibernate.id.UUIDGenerator")
+//    @GeneratedValue(generator = "USERS_ID_SEQ")
+//    @GenericGenerator(name = "USERS_ID_SEQ", strategy = "org.hibernate.id.UUIDGenerator")
     @Column(name = "id")
     private String id;
 
@@ -31,4 +31,8 @@ public class User implements Serializable {
 
     @NotBlank(message = "password is mandatory")
     private String password;
+
+    public User(String id) {
+        this.id = id;
+    }
 }
