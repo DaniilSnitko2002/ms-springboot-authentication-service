@@ -1,9 +1,12 @@
 package com.springboot.msauthenticationservice.entity;
 
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.Id;
+import jakarta.persistence.Table;
 import jakarta.validation.constraints.NotBlank;
 import lombok.*;
 
-import javax.persistence.*;
 import java.io.Serializable;
 
 @Builder

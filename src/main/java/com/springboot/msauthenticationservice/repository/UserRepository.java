@@ -19,5 +19,5 @@ public interface UserRepository extends JpaRepository<User, String> {
      * @param password
      * @return
      */
-    Optional<User> findByEmailEqualsIgnonreCaseAndPasswordEquals(String email, String password);
+    Optional<User> findByEmailAndPassword(String email, String password);
 }

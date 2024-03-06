@@ -33,7 +33,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public String logInUserView(LogInDto logInDto) throws IOException {
-        Optional<User> value = userRepository.findByEmailEqualsIgnonreCaseAndPasswordEquals(logInDto.email, logInDto.password);
+        Optional<User> value = userRepository.findByEmailAndPassword(logInDto.email, logInDto.password);
         return value.toString();
     }
 }
