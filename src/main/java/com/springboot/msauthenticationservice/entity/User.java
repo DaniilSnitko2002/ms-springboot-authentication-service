@@ -23,16 +23,21 @@ public class User implements Serializable {
     @Column(name = "id")
     private String id;
 
+    /**
+     * The name
+     */
     @NotBlank(message = "Name is mandatory")
     private String name;
 
+    /**
+     * The email
+     */
     @NotBlank(message = "email is mandatory")
     private String email;
 
+    /**
+     * The password
+     */
     @NotBlank(message = "password is mandatory")
     private String password;
-
-    public User(String id) {
-        this.id = id;
-    }
 }
