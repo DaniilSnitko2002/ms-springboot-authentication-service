@@ -5,14 +5,18 @@ import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotNull;
 import lombok.*;
 
-@Builder
-@Getter
-@Setter
-@ToString
+import java.util.UUID;
+
+
+@Data
 @AllArgsConstructor
 @NoArgsConstructor
 public class SignUpDto {
 
+    /**
+     * The id
+     */
+    private UUID id;
     /**
      * The username
      */
@@ -30,4 +34,12 @@ public class SignUpDto {
      */
     @NotNull
     private String password;
+
+    public UUID getId(){
+        return this.id;
+    }
+
+    public String getEmail() {
+        return this.email;
+    }
 }

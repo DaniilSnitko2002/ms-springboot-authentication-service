@@ -5,9 +5,11 @@ import com.springboot.msauthenticationservice.dto.LogInDto;
 import com.springboot.msauthenticationservice.dto.SignUpDto;
 import com.springboot.msauthenticationservice.service.UserService;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RestController;
+
+import java.net.URI;
 
 /**
  * The Api User
@@ -26,25 +28,29 @@ public class UserApiController implements UserApi {
         this.userService = userService;
     }
 
+    /**
+     * Signing up a user
+     * @param signUpDto the dto
+     * @return the response entity
+     */
     @Override
     public ResponseEntity<String> signUpUserView(SignUpDto signUpDto) {
-        try {
+            var savedUser = this.userService.signUpUser(signUpDto);
+            return ResponseEntity.created(URI.create(
+                            "/user/".concat(savedUser.getId().toString())))
+                    .contentType(MediaType.APPLICATION_JSON).body("Id: ".concat(savedUser.getId().toString()));
 
-            var value = this.userService.signUpUserView(signUpDto);
-            return ResponseEntity.ok(value);
-        }catch (Exception e){
-            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
-        }
     }
 
+    /**
+     * Logging a user
+     * @param logInDto the dto
+     * @return the response entity
+     */
     @Override
-    public ResponseEntity<String> logInUserView(LogInDto logInDto) {
-        try {
-            var value = this.userService.logInUserView(logInDto);
-
+    public ResponseEntity<LogInDto> logInUserView(LogInDto logInDto) {
+            var value = this.userService.logInUser(logInDto);
             return ResponseEntity.ok(value);
-        }catch (Exception e){
-            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
-        }
+
     }
 }
