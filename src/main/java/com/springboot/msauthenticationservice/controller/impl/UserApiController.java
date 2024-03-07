@@ -4,6 +4,7 @@ import com.springboot.msauthenticationservice.controller.UserApi;
 import com.springboot.msauthenticationservice.dto.LogInDto;
 import com.springboot.msauthenticationservice.dto.SignUpDto;
 import com.springboot.msauthenticationservice.service.UserService;
+import com.springboot.msauthenticationservice.security.jwt.JwtUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -34,11 +35,11 @@ public class UserApiController implements UserApi {
      * @return the response entity
      */
     @Override
-    public ResponseEntity<String> signUpUserView(SignUpDto signUpDto) {
+    public ResponseEntity<String> signUpUser(SignUpDto signUpDto) {
             var savedUser = this.userService.signUpUser(signUpDto);
             return ResponseEntity.created(URI.create(
                             "/user/".concat(savedUser.getId().toString())))
-                    .contentType(MediaType.APPLICATION_JSON).body("Id: ".concat(savedUser.getId().toString()));
+                    .contentType(MediaType.APPLICATION_JSON).body("id: ".concat(savedUser.getId().toString()));
 
     }
 
@@ -48,9 +49,14 @@ public class UserApiController implements UserApi {
      * @return the response entity
      */
     @Override
-    public ResponseEntity<LogInDto> logInUserView(LogInDto logInDto) {
-            var value = this.userService.logInUser(logInDto);
-            return ResponseEntity.ok(value);
+    public ResponseEntity<String> logInUser(LogInDto logInDto) {
+            var user = this.userService.logInUser(logInDto);
+            String token = JwtUtil.generateToken(user.getUsername());
+            return ResponseEntity.ok(token);
+    }
 
+    @Override
+    public ResponseEntity<String> userData(String id) {
+        return ResponseEntity.ok("Entra");
     }
 }

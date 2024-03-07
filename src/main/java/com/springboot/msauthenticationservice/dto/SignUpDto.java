@@ -20,6 +20,7 @@ public class SignUpDto {
     /**
      * The username
      */
+
     @NotNull
     private String username;
     /**
@@ -41,5 +42,13 @@ public class SignUpDto {
 
     public String getEmail() {
         return this.email;
+    }
+
+    public String getPassword(){
+        return this.password;
+    }
+
+    public void setPassword(String password){
+        this.password = password;
     }
 }

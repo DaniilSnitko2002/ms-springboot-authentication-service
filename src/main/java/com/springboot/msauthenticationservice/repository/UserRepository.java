@@ -13,14 +13,6 @@ import java.util.Optional;
 public interface UserRepository extends JpaRepository<User, String> {
 
     /**
-     * Logging user
-     * @param email the email
-     * @param password the password
-     * @return the optional
-     */
-    Optional<User> findByEmailIgnoreCaseAndPassword(String email, String password);
-
-    /**
      * Find a user by email
      * @param email the email
      * @return the optional
