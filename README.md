@@ -1,14 +1,22 @@
 # Springboot Authentication Service
 My first Springboot proyect.
 
-This proyect will be a service that authenticate a user. 
+This authentication service is designed to provide robust, reliable, and scalable security solutions. 
 
-You will simulate a registration in a App, and then you will be able to log in with the data you provided during the registration
+You can simulate a registration, and then you will be able to authenticate with the provided data
+
+### Key Features
+
+- **Secure Authentication**: Provides secure authentication mechanisms, including token-based authentication, and password encryption, to ensure the highest level of security for the users
+- **Integration Ready**: Seamlessly integrates with Spring Boot applications, making it easy to incorporate into your existing projects without hassle
+- **Customization**: Allows for easy customization to fit your specific needs
 
 # Getting Started
 
-### Development server
-You'll need a file editor that supports Java
+### Development Server
+You'll need a file editor that supports Java (I recommend Intellij). Then you can go to the main application file and run the application with the ▶️ button
+
+If you want to debug the application you'll need to create break point in app and run the app with the bug icon button
 
 ### Reference Documentation
 For further reference, please consider the following sections:

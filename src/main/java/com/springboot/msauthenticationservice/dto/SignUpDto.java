@@ -21,12 +21,13 @@ public class SignUpDto {
      * The id
      */
     private UUID id;
+
     /**
      * The username
      */
-
     @NotBlank
     private String username;
+
     /**
      * The email
      */
