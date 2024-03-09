@@ -43,7 +43,6 @@ public class User implements UserDetails {
      * The name
      */
     @NotBlank(message = "Name is mandatory")
-    @Column(name = "name")
     private String name;
 
     /**
