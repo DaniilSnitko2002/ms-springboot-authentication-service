@@ -2,15 +2,19 @@ package com.springboot.msauthenticationservice.dto;
 
 import jakarta.validation.constraints.Email;
 
-import jakarta.validation.constraints.NotNull;
-import lombok.*;
+import jakarta.validation.constraints.NotBlank;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import java.util.UUID;
 
 
 @Data
-@AllArgsConstructor
+@Builder
 @NoArgsConstructor
+@AllArgsConstructor
 public class SignUpDto {
 
     /**
@@ -21,34 +25,18 @@ public class SignUpDto {
      * The username
      */
 
-    @NotNull
+    @NotBlank
     private String username;
     /**
      * The email
      */
     @Email(message = "should be of type email")
-    @NotNull
+    @NotBlank
     private String email;
 
     /**
      * The password
      */
-    @NotNull
+    @NotBlank
     private String password;
-
-    public UUID getId(){
-        return this.id;
-    }
-
-    public String getEmail() {
-        return this.email;
-    }
-
-    public String getPassword(){
-        return this.password;
-    }
-
-    public void setPassword(String password){
-        this.password = password;
-    }
 }

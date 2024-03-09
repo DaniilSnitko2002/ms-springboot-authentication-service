@@ -1,13 +1,18 @@
 package com.springboot.msauthenticationservice.service.impl;
 
 import com.springboot.msauthenticationservice.constant.PrefixPasswordConstant;
+import com.springboot.msauthenticationservice.constant.UserRoles;
 import com.springboot.msauthenticationservice.dto.LogInDto;
 import com.springboot.msauthenticationservice.dto.SignUpDto;
+import com.springboot.msauthenticationservice.entity.User;
 import com.springboot.msauthenticationservice.mapper.UserMapper;
 import com.springboot.msauthenticationservice.repository.UserRepository;
+import com.springboot.msauthenticationservice.security.jwt.JwtUtil;
 import com.springboot.msauthenticationservice.service.UserService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
@@ -21,21 +26,32 @@ import java.util.Optional;
 @Service
 public class UserServiceImpl implements UserService {
 
+
     private final UserRepository userRepository;
 
     private final UserMapper userMapper;
 
     private final PasswordEncoder passwordEncoder;
 
+    private final JwtUtil jwtUtil;
+
+    private final AuthenticationManager authenticationManager;
+
+
     /**
      * Constructor
-     * @param userRepository the user repository
-     * @param userMapper the user mapper
+     * @param userRepository user repository
+     * @param userMapper user mapper
+     * @param passwordEncoder password encoder
+     * @param jwtUtil jwt utils
+     * @param authenticationManager authentication manager
      */
-    public UserServiceImpl(UserRepository userRepository, UserMapper userMapper, PasswordEncoder passwordEncoder) {
+    public UserServiceImpl(UserRepository userRepository, UserMapper userMapper, PasswordEncoder passwordEncoder, JwtUtil jwtUtil, AuthenticationManager authenticationManager) {
         this.userRepository = userRepository;
         this.userMapper = userMapper;
         this.passwordEncoder = passwordEncoder;
+        this.jwtUtil = jwtUtil;
+        this.authenticationManager = authenticationManager;
     }
 
     /**
@@ -45,14 +61,23 @@ public class UserServiceImpl implements UserService {
      */
     @Override
     public SignUpDto signUpUser(SignUpDto signUpDto) {
-        return Optional.of(signUpDto)
+        var password = PrefixPasswordConstant.PASSWORD_PREFIX.concat(signUpDto.getPassword());
+
+        var user = User.builder()
+                .name(signUpDto.getUsername())
+                .email(signUpDto.getEmail())
+                .password(password)
+                .role(UserRoles.USER)
+                .build();
+
+        return Optional.of(user)
                 .map(this::validateAlreadyExists)
                 .map(this::encodePassword)
-                .map(userMapper::mapSignUp)
                 .map(userRepository::save)
                 .map(userMapper::mapSignUp)
                 .orElseThrow(()->
                     new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "Something went wrong when signing up the user"));
+
     }
 
     /**
@@ -62,45 +87,45 @@ public class UserServiceImpl implements UserService {
      */
     @Override
     public LogInDto logInUser(LogInDto logInDto) {
-        return userRepository.
+        var password = PrefixPasswordConstant.PASSWORD_PREFIX.concat(logInDto.getPassword());
+
+        authenticationManager.authenticate(
+                new UsernamePasswordAuthenticationToken(
+                        logInDto.getEmail(),
+                        password)
+                );
+
+        var user = userRepository.
                 findByEmail(logInDto.getEmail())
-                .map(userMapper::mapLogIn)
-                .map(given ->{
-                    verifyPassword(logInDto.getPassword(), given.getPassword());
-                    return given;
-                })
-                .orElseThrow( () ->
-                        new ResponseStatusException(HttpStatus.NOT_FOUND, "User not found"));
+                .orElseThrow();
+
+        var jwtToken = jwtUtil.generateToken(user);
+
+        return LogInDto.builder().token(jwtToken).build();
     }
 
     /**
      * Validation if a user already exists
-     * @param signUpDto the SignUpDto
-     * @return the SignUpDto
+     * @param user the user
+     * @return the user
      */
-    private SignUpDto validateAlreadyExists(SignUpDto signUpDto){
-        userRepository.findByEmail(signUpDto.getEmail())
+    private User validateAlreadyExists(User user){
+        userRepository.findByEmail(user.getEmail())
         .ifPresent(given ->{
             throw new ResponseStatusException(HttpStatus.CONFLICT, "Email is already in use");
         });
-        return signUpDto;
+        return user;
     }
 
-    private SignUpDto encodePassword(SignUpDto signUpDto){
-        var plainPassword = signUpDto.getPassword();
-        var password = PrefixPasswordConstant.PASSWORD_PREFIX.concat(plainPassword);
+    /**
+     * Encode the password
+     * @param user user
+     * @return user
+     */
+    private User encodePassword(User user){
+        var password = user.getPassword();
         var encodedPassword = passwordEncoder.encode(password);
-        signUpDto.setPassword(encodedPassword);
-        return signUpDto;
-    }
-
-    private void verifyPassword(String logInPassword, String UserPassword){
-        var password = PrefixPasswordConstant.PASSWORD_PREFIX.concat(logInPassword);
-
-        boolean passwordMatches = passwordEncoder.matches(password, UserPassword);
-
-        if(!passwordMatches){
-            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Incorrect password");
-        }
+        user.setPassword(encodedPassword);
+        return user;
     }
 }

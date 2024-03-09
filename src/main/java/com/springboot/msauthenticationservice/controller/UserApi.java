@@ -7,12 +7,9 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 
-@RequestMapping("/user")
+@RequestMapping("/api/v1/user")
 public interface UserApi {
 
     /*
@@ -44,19 +41,4 @@ public interface UserApi {
     })
     @PostMapping(value = "/log_in", produces = {"application/json"})
     ResponseEntity<String> logInUser(@Valid @RequestBody LogInDto logInDto);
-
-    /*
-     * Sign up user
-     * @Return user Data
-     */
-    @Operation(summary = "Get User data", description = "getting user data", tags = {"User"})
-    @ApiResponses(value ={
-            @ApiResponse(responseCode = "200", description = "getting user"),
-            @ApiResponse(responseCode = "204", description = "No content"),
-            @ApiResponse(responseCode = "500", description = "Internal server Error"),
-            @ApiResponse(responseCode = "400", description = "Bad Request"),
-            @ApiResponse(responseCode = "405", description = "Method Not Allowed")
-    })
-    @PostMapping(value = "/{id}", produces = {"application/json"})
-    ResponseEntity<String> userData(@PathVariable String id);
 }

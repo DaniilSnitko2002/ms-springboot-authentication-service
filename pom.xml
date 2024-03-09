@@ -66,12 +66,7 @@
 			<scope>provided</scope>
 		</dependency>
 
-		<!--<dependency>
-			<groupId>io.jsonwebtoken</groupId>
-			<artifactId>jjwt</artifactId>
-			<version>0.9.1</version> &lt;!&ndash; Use the latest version available &ndash;&gt;
-		</dependency>-->
-
+		<!--Tokenization-->
 		<dependency>
 			<groupId>io.jsonwebtoken</groupId>
 			<artifactId>jjwt-api</artifactId>

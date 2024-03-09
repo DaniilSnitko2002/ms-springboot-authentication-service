@@ -9,6 +9,12 @@ import org.springframework.stereotype.Component;
 
 @Component
 public class UserMapperImpl implements UserMapper {
+
+    /**
+     * Map SignUpDto
+     * @param user the user
+     * @return the SignUpDeto
+     */
     @Override
     public SignUpDto mapSignUp(User user) {
         if(user == null) {
@@ -19,6 +25,11 @@ public class UserMapperImpl implements UserMapper {
         return signUpDto;
     }
 
+    /**
+     * Map User
+     * @param signUpDto the SignUpDto
+     * @return the user
+     */
     @Override
     public User mapSignUp(SignUpDto signUpDto) {
         if(signUpDto == null) {
@@ -30,6 +41,11 @@ public class UserMapperImpl implements UserMapper {
         return user;
     }
 
+    /**
+     * Map LogInDto
+     * @param user the user
+     * @return the LogInDto
+     */
     @Override
     public LogInDto mapLogIn(User user) {
         if(user == null) {

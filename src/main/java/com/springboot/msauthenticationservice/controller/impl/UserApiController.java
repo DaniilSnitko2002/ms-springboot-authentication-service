@@ -4,7 +4,6 @@ import com.springboot.msauthenticationservice.controller.UserApi;
 import com.springboot.msauthenticationservice.dto.LogInDto;
 import com.springboot.msauthenticationservice.dto.SignUpDto;
 import com.springboot.msauthenticationservice.service.UserService;
-import com.springboot.msauthenticationservice.security.jwt.JwtUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -51,12 +50,6 @@ public class UserApiController implements UserApi {
     @Override
     public ResponseEntity<String> logInUser(LogInDto logInDto) {
             var user = this.userService.logInUser(logInDto);
-            String token = JwtUtil.generateToken(user.getUsername());
-            return ResponseEntity.ok(token);
-    }
-
-    @Override
-    public ResponseEntity<String> userData(String id) {
-        return ResponseEntity.ok("Entra");
+            return ResponseEntity.ok(user.getToken());
     }
 }
