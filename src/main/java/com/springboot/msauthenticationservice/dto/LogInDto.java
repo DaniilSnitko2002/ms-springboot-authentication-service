@@ -25,7 +25,7 @@ public class LogInDto {
     private String password;
 
     /**
-     * The username
+     * The token
      */
     @JsonInclude(JsonInclude.Include.NON_NULL)
     private String token;

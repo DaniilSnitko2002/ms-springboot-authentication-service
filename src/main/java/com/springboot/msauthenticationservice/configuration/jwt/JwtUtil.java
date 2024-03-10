@@ -1,4 +1,4 @@
-package com.springboot.msauthenticationservice.security.jwt;
+package com.springboot.msauthenticationservice.configuration.jwt;
 
 import io.jsonwebtoken.*;
 import io.jsonwebtoken.io.Decoders;
@@ -20,7 +20,7 @@ public class JwtUtil {
     /**
      * The time a token will be valid before it expires
      */
-    private static final long EXPIRATION_TIME = 1440000; // 1 day
+    private static final long EXPIRATION_TIME = 86400000; // 1 day
 
     /**
      * method to generate the token just from the user details

@@ -1,4 +1,4 @@
-package com.springboot.msauthenticationservice.security.jwt;
+package com.springboot.msauthenticationservice.configuration.jwt;
 
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
@@ -33,8 +33,8 @@ public class AuthTokenFilter extends OncePerRequestFilter {
      * @param request the request
      * @param response the response
      * @param filterChain the filter chain
-     * @throws ServletException
-     * @throws IOException
+     * @throws ServletException a ServletException
+     * @throws IOException a IOException
      */
     @Override
     protected void doFilterInternal(

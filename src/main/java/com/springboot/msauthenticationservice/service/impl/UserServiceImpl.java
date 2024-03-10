@@ -7,16 +7,16 @@ import com.springboot.msauthenticationservice.dto.SignUpDto;
 import com.springboot.msauthenticationservice.entity.User;
 import com.springboot.msauthenticationservice.mapper.UserMapper;
 import com.springboot.msauthenticationservice.repository.UserRepository;
-import com.springboot.msauthenticationservice.security.jwt.JwtUtil;
+import com.springboot.msauthenticationservice.configuration.jwt.JwtUtil;
 import com.springboot.msauthenticationservice.service.UserService;
+import com.sun.jdi.InternalException;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-import org.springframework.web.server.ResponseStatusException;
 
+import java.lang.module.FindException;
 import java.util.Optional;
 
 /**
@@ -75,8 +75,7 @@ public class UserServiceImpl implements UserService {
                 .map(this::encodePassword)
                 .map(userRepository::save)
                 .map(userMapper::mapSignUp)
-                .orElseThrow(()->
-                    new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "Something went wrong when signing up the user"));
+                .orElseThrow(InternalException::new);
 
     }
 
@@ -112,7 +111,7 @@ public class UserServiceImpl implements UserService {
     private User validateAlreadyExists(User user){
         userRepository.findByEmail(user.getEmail())
         .ifPresent(given ->{
-            throw new ResponseStatusException(HttpStatus.CONFLICT, "Email is already in use");
+            throw new FindException();
         });
         return user;
     }

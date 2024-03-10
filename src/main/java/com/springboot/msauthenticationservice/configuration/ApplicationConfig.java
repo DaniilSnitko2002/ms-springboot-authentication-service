@@ -1,4 +1,4 @@
-package com.springboot.msauthenticationservice.security;
+package com.springboot.msauthenticationservice.configuration;
 
 
 import com.springboot.msauthenticationservice.repository.UserRepository;
@@ -48,7 +48,7 @@ public class ApplicationConfig {
      * Bean for the Authentication Manager
      * @param config the Authentication Configuration
      * @return an AuthenticationManager
-     * @throws Exception
+     * @throws Exception an Exception
      */
     @Bean
     public AuthenticationManager authenticationManager(AuthenticationConfiguration config) throws Exception {
@@ -57,7 +57,7 @@ public class ApplicationConfig {
 
     /**
      * Bean for the password encoder
-     * @return aPasswordEncoder
+     * @return PasswordEncoder
      */
     @Bean
     public PasswordEncoder passwordEncoder(){

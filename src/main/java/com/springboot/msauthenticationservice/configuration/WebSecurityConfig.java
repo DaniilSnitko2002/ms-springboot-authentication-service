@@ -1,8 +1,6 @@
-package com.springboot.msauthenticationservice.security;
+package com.springboot.msauthenticationservice.configuration;
 
-
-import com.springboot.msauthenticationservice.security.jwt.AuthEntryPointJwt;
-import com.springboot.msauthenticationservice.security.jwt.AuthTokenFilter;
+import com.springboot.msauthenticationservice.configuration.jwt.AuthTokenFilter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -19,9 +17,6 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 @EnableWebSecurity
 @RequiredArgsConstructor
 public class WebSecurityConfig {
-
-    @Autowired
-    private AuthEntryPointJwt unauthorizedHandler;
 
     @Autowired
     private AuthTokenFilter authTokenFilter;
@@ -42,7 +37,6 @@ public class WebSecurityConfig {
                         auth.requestMatchers("/api/v1/user/*").permitAll()
                                 .anyRequest().authenticated()
                 )
-                .exceptionHandling(exception -> exception.authenticationEntryPoint(unauthorizedHandler))
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authenticationProvider(authenticationProvider)
                 .addFilterBefore(authTokenFilter, UsernamePasswordAuthenticationFilter.class);
