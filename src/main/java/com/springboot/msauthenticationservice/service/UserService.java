@@ -1,11 +1,11 @@
 package com.springboot.msauthenticationservice.service;
 
-import com.springboot.msauthenticationservice.dto.LogInDto;
-import com.springboot.msauthenticationservice.dto.SignUpDto;
+import com.springboot.msauthenticationservice.dto.RegisterDto;
+import com.springboot.msauthenticationservice.dto.AuthenticationDto;
 
 public interface UserService {
-    SignUpDto signUpUser (SignUpDto signUpDto);
+    RegisterDto registerUser (RegisterDto registerDto);
 
-    LogInDto logInUser (LogInDto logInDto);
+    AuthenticationDto authenticateUser (AuthenticationDto authenticationDto);
 
 }

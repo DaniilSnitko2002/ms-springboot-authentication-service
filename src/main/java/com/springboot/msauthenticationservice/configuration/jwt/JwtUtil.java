@@ -18,12 +18,12 @@ public class JwtUtil {
     private static final String SECRET_KEY = "TheSecretDeyThatShouldBeLongEnoughToBeAtLeast256bits";
 
     /**
-     * The time a token will be valid before it expires
+     * Time a token will be valid before it expires
      */
     private static final long EXPIRATION_TIME = 86400000; // 1 day
 
     /**
-     * method to generate the token just from the user details
+     * Method to generate the token just from the user details
      * @param userDetails the user details
      * @return the token
      */
@@ -32,7 +32,7 @@ public class JwtUtil {
     }
 
     /**
-     * method for the token generation
+     * Method for the token generation
      * @param extraClaims the extra claims that we want to add
      * @param userDetails the user details
      * @return the token
@@ -48,7 +48,7 @@ public class JwtUtil {
     }
 
     /**
-     * method to extract the username
+     * Method to extract the username
      * @param token the token
      * @return the username
      */
@@ -57,7 +57,7 @@ public class JwtUtil {
     }
 
     /**
-     * method to extract a single claim
+     * Method to extract a single claim
      * @param token the token
      * @param claimsResolver the claim resolver
      * @return a claim
@@ -84,7 +84,7 @@ public class JwtUtil {
     }
 
     /**
-     * method to get the Sign in Key
+     * Method to get the Sign in Key
      * @return the sign in key
      */
     private static Key getSignInKey(){
@@ -93,7 +93,7 @@ public class JwtUtil {
     }
 
     /**
-     * method to validate the token
+     * Method to validate the token
      * @param token the token
      * @param userDetails the user details
      * @return a boolean
@@ -103,10 +103,20 @@ public class JwtUtil {
             return (username.equals(userDetails.getUsername())) && !isTokenExpired(token);
     }
 
+    /**
+     * Method to check if a token is expired
+     * @param token the token
+     * @return a boolean
+     */
     private boolean isTokenExpired(String token) {
         return extractExpiration(token).before(new Date());
     }
 
+    /**
+     * Method to extract the expiration date
+     * @param token the token
+     * @return a date
+     */
     private Date extractExpiration(String token) {
         return extractClaim(token, Claims::getExpiration);
     }

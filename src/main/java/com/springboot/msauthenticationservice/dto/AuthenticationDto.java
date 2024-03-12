@@ -2,26 +2,29 @@ package com.springboot.msauthenticationservice.dto;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import jakarta.validation.constraints.Email;
-import jakarta.validation.constraints.NotNull;
-import lombok.*;
+import jakarta.validation.constraints.NotBlank;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @Data
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class LogInDto {
+public class AuthenticationDto {
 
     /**
      * The email
      */
     @Email(message = "should be of type email")
-    @NotNull
+    @NotBlank(message = "Email is mandatory")
     private String email;
 
     /**
      * The password
      */
-    @NotNull
+    @NotBlank(message = "Password is mandatory")
     private String password;
 
     /**
@@ -29,5 +32,4 @@ public class LogInDto {
      */
     @JsonInclude(JsonInclude.Include.NON_NULL)
     private String token;
-
 }

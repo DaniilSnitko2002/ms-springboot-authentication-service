@@ -2,8 +2,8 @@ package com.springboot.msauthenticationservice.service.impl;
 
 import com.springboot.msauthenticationservice.constant.PrefixPasswordConstant;
 import com.springboot.msauthenticationservice.constant.UserRoles;
-import com.springboot.msauthenticationservice.dto.LogInDto;
-import com.springboot.msauthenticationservice.dto.SignUpDto;
+import com.springboot.msauthenticationservice.dto.AuthenticationDto;
+import com.springboot.msauthenticationservice.dto.RegisterDto;
 import com.springboot.msauthenticationservice.entity.User;
 import com.springboot.msauthenticationservice.mapper.UserMapper;
 import com.springboot.msauthenticationservice.repository.UserRepository;
@@ -55,17 +55,17 @@ public class UserServiceImpl implements UserService {
     }
 
     /**
-     * Signing up a user
-     * @param signUpDto the SignUpDto
-     * @return the SignUpDto
+     * Registering a user
+     * @param registerDto the RegisterDto
+     * @return the RegisterDto
      */
     @Override
-    public SignUpDto signUpUser(SignUpDto signUpDto) {
-        var password = PrefixPasswordConstant.PASSWORD_PREFIX.concat(signUpDto.getPassword());
+    public RegisterDto registerUser(RegisterDto registerDto) {
+        var password = PrefixPasswordConstant.PASSWORD_PREFIX.concat(registerDto.getPassword());
 
         var user = User.builder()
-                .name(signUpDto.getUsername())
-                .email(signUpDto.getEmail())
+                .name(registerDto.getUsername())
+                .email(registerDto.getEmail())
                 .password(password)
                 .role(UserRoles.USER)
                 .build();
@@ -74,37 +74,37 @@ public class UserServiceImpl implements UserService {
                 .map(this::validateAlreadyExists)
                 .map(this::encodePassword)
                 .map(userRepository::save)
-                .map(userMapper::mapSignUp)
+                .map(userMapper::mapRegister)
                 .orElseThrow(InternalException::new);
 
     }
 
     /**
-     * Logging a user
-     * @param logInDto the LogInDto
-     * @return the LogInDto
+     * Authentication of a user
+     * @param authenticationDto the AuthenticationDto
+     * @return the AuthenticationDto
      */
     @Override
-    public LogInDto logInUser(LogInDto logInDto) {
-        var password = PrefixPasswordConstant.PASSWORD_PREFIX.concat(logInDto.getPassword());
+    public AuthenticationDto authenticateUser(AuthenticationDto authenticationDto) {
+        var password = PrefixPasswordConstant.PASSWORD_PREFIX.concat(authenticationDto.getPassword());
 
         authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(
-                        logInDto.getEmail(),
+                        authenticationDto.getEmail(),
                         password)
                 );
 
         var user = userRepository.
-                findByEmail(logInDto.getEmail())
+                findByEmail(authenticationDto.getEmail())
                 .orElseThrow();
 
         var jwtToken = jwtUtil.generateToken(user);
 
-        return LogInDto.builder().token(jwtToken).build();
+        return AuthenticationDto.builder().token(jwtToken).build();
     }
 
     /**
-     * Validation if a user already exists
+     * Method to check if a user already exists
      * @param user the user
      * @return the user
      */
@@ -117,7 +117,7 @@ public class UserServiceImpl implements UserService {
     }
 
     /**
-     * Encode the password
+     * Method for the password encoding
      * @param user user
      * @return user
      */

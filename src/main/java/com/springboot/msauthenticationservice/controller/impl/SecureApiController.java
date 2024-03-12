@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.RestController;
 public class SecureApiController implements SecureApi {
 
     /**
-     * Mock endpoint for security check
+     * Mock for security check
      * @return String
      */
     @Override
