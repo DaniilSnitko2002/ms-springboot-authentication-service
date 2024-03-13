@@ -1,5 +1,4 @@
 # Springboot Authentication Service
-My first Springboot proyect.
 
 This authentication service is designed to provide robust, reliable, and scalable security solutions. 
 

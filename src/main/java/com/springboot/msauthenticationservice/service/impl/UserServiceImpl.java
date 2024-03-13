@@ -96,7 +96,7 @@ public class UserServiceImpl implements UserService {
 
         var user = userRepository.
                 findByEmail(authenticationDto.getEmail())
-                .orElseThrow();
+                .orElseThrow(InternalException::new);
 
         var jwtToken = jwtUtil.generateToken(user);
 
